@@ -20,32 +20,9 @@ The pipeline automates:
 
 ---
 
-# 🏗️ Architecture
+## 🏗️ Architecture
 
-```
-GitHub Repository
-        │
-GitHub REST API
-        │
-Apache Airflow
-        │
-Amazon S3 (Bronze)
-        │
-Apache Spark
-        │
-Amazon S3 (Silver)
-        │
-Amazon S3 (Gold)
-        │
-Glue Crawler
-        │
-Glue Data Catalog
-        │
-Amazon Athena
-        │
-Power BI / Users
-```
-
+![AWS Data Engineering Pipeline Architecture](Acreenshot 2026-07-08 231726.png)
 ---
 
 # 🛠️ Tech Stack
