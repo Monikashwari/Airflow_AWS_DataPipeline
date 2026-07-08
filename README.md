@@ -1,69 +1,73 @@
 # 🚀 End-to-End AWS Data Engineering Pipeline
 
-An end-to-end AWS Data Engineering project that automatically fetches datasets from a GitHub repository using the GitHub REST API, processes the data through a Medallion Architecture (Bronze, Silver, Gold), and makes it available for analytics using Athena and Power BI.
+An end-to-end AWS Data Engineering project that automates data ingestion from a GitHub repository using the GitHub REST API, processes data through a Medallion Architecture (Bronze, Silver, Gold), catalogs datasets with AWS Glue, and enables analytics using Amazon Athena and Power BI.
 
 ---
 
 # 📌 Project Overview
 
-This project demonstrates a production-style data engineering pipeline using AWS services, Apache Airflow, Apache Spark, AWS Glue, and GitHub API.
+This project demonstrates an end-to-end data engineering pipeline built using AWS services, Apache Airflow, Apache Spark (PySpark), and the GitHub REST API.
 
 The pipeline automates:
 
-- Fetching datasets from GitHub using GitHub REST API
+- Fetching datasets from a GitHub repository using the GitHub REST API
 - Loading raw data into Amazon S3 (Bronze Layer)
-- Data transformation using Apache Spark
-- Data catalog creation using AWS Glue Crawler
-- Querying data with Amazon Athena
-- Analytics using Power BI
-- Workflow orchestration with Apache Airflow
+- Transforming and cleaning data using Apache Spark (PySpark)
+- Organizing data into Bronze, Silver, and Gold layers
+- Creating metadata using AWS Glue Crawler
+- Querying processed data using Amazon Athena
+- Visualizing insights using Power BI
+- Orchestrating the entire workflow using Apache Airflow
 
 ---
 
-## 🏗️ Architecture
+# 🏗️ Architecture
 
 ![AWS Data Engineering Pipeline Architecture](./Screenshot%202026-07-08%20231726.png)
+
 ---
 
 # 🛠️ Tech Stack
 
 | Category | Technology |
-|-----------|------------|
+|----------|------------|
 | Programming Language | Python |
 | Workflow Orchestration | Apache Airflow |
+| Data Source | GitHub REST API |
 | Data Storage | Amazon S3 |
 | Data Processing | Apache Spark (PySpark) |
 | Metadata Catalog | AWS Glue Crawler |
 | Query Engine | Amazon Athena |
 | Visualization | Power BI |
 | Version Control | GitHub |
-| Data Source | GitHub REST API |
 | Cloud Platform | AWS |
 | Security | AWS IAM |
+| Containerization | Docker, Docker Compose |
 
 ---
 
 # 📂 Project Structure
 
-```
-Airflow_AWS_DataPipeline
+```text
+Airflow_AWS_DataPipeline/
 │
-├── airflow/
-│   ├── dags/
-│   └── plugins/
+├── config/                      # Airflow configuration
+├── dags/                        # Airflow DAG definitions
+├── logs/                        # Airflow execution logs
 │
-├── spark/
+├── utils/
+│   ├── Bronze_layer.py          # Bronze layer ingestion
+│   ├── Silver_layer.py          # Silver layer transformation
+│   ├── Gold_layer.py            # Gold layer processing
+│   └── __init__.py
 │
-├── scripts/
-│
-├── datasets/
-│
-├── notebooks/
-│
-├── images/
-│
+├── .env_example                 # Environment variables template
+├── .gitignore
+├── Dockerfile                   # Docker configuration
+├── docker-compose.yaml          # Docker Compose configuration
+├── Gold_Layer.ipynb             # Gold layer notebook
+├── Screenshot 2026-07-08 231726.png
 ├── requirements.txt
-│
 └── README.md
 ```
 
@@ -71,14 +75,14 @@ Airflow_AWS_DataPipeline
 
 # 📊 Data Source
 
-Datasets are stored in a GitHub repository and are automatically downloaded using the GitHub REST API.
+The project retrieves datasets directly from a GitHub repository using the GitHub REST API.
 
-Example workflow:
+The ingestion process performs the following steps:
 
-1. Airflow triggers the pipeline.
-2. Python connects to the GitHub API.
+1. Apache Airflow triggers the workflow.
+2. Python authenticates with the GitHub REST API.
 3. Dataset files are downloaded.
-4. Files are uploaded to Amazon S3 Bronze Layer.
+4. Raw files are uploaded to Amazon S3 Bronze Layer.
 
 ---
 
@@ -86,43 +90,43 @@ Example workflow:
 
 ### Step 1
 
-Apache Airflow triggers the DAG.
+Apache Airflow schedules and triggers the pipeline.
 
 ↓
 
 ### Step 2
 
-Python fetches datasets from GitHub using the GitHub REST API.
+Python retrieves datasets from GitHub using the GitHub REST API.
 
 ↓
 
 ### Step 3
 
-Raw CSV files are stored in Amazon S3 Bronze Layer.
+Raw CSV files are stored in the Amazon S3 Bronze Layer.
 
 ↓
 
 ### Step 4
 
-Apache Spark cleans and transforms the data.
+Apache Spark (PySpark) cleans, validates, and transforms the raw data.
 
 ↓
 
 ### Step 5
 
-Processed data is written to the Silver Layer.
+Processed datasets are written into the Silver Layer.
 
 ↓
 
 ### Step 6
 
-Business-ready datasets are written to the Gold Layer.
+Business-ready datasets are stored in the Gold Layer.
 
 ↓
 
 ### Step 7
 
-AWS Glue Crawler scans the Gold Layer and updates the Glue Data Catalog.
+AWS Glue Crawler scans the Gold Layer and updates the AWS Glue Data Catalog.
 
 ↓
 
@@ -134,83 +138,71 @@ Amazon Athena queries the cataloged datasets.
 
 ### Step 9
 
-Power BI connects to Athena for reporting and dashboards.
+Power BI connects to Amazon Athena to create interactive dashboards and reports.
 
 ---
 
 # 🥉 Bronze Layer
 
-- Raw datasets downloaded from GitHub API
-- Stored without modifications
+The Bronze Layer stores raw data exactly as received from the GitHub repository.
+
+Features:
+
+- Raw CSV datasets
+- No transformations
 - Source of truth
+- Stored in Amazon S3
 
 ---
 
 # 🥈 Silver Layer
 
-- Cleaned datasets
+The Silver Layer contains cleaned and standardized datasets.
+
+Features:
+
+- Missing values handled
+- Duplicate records removed
 - Standardized schema
-- Removed duplicates
-- Handled missing values
+- Data transformations using PySpark
 
 ---
 
 # 🥇 Gold Layer
 
-- Analytics-ready datasets
+The Gold Layer stores analytics-ready datasets optimized for reporting.
+
+Features:
+
 - Aggregated business metrics
-- Optimized for reporting
+- Optimized analytical tables
+- Reporting-ready datasets
+- Used by Athena and Power BI
 
 ---
 
 # 🔐 Security
 
-AWS IAM is used to manage permissions for:
+AWS IAM is used to securely manage access to:
 
 - Amazon S3
 - AWS Glue
-- Athena
-- Airflow
+- Amazon Athena
+- Apache Airflow
 
 ---
 
-# 📈 Data Flow
-
-```
-GitHub Repository
-        │
-GitHub REST API
-        │
-Apache Airflow
-        │
-Amazon S3 Bronze
-        │
-Apache Spark
-        │
-Amazon S3 Silver
-        │
-Amazon S3 Gold
-        │
-Glue Crawler
-        │
-Glue Data Catalog
-        │
-Amazon Athena
-        │
-Power BI
-```
-
----
-
-# 🎯 Key Features
+# ✨ Key Features
 
 - Automated data ingestion from GitHub
-- Apache Airflow orchestration
-- Medallion Architecture
-- Apache Spark transformations
-- AWS Glue Data Catalog
+- Apache Airflow workflow orchestration
+- GitHub REST API integration
+- Medallion Architecture (Bronze, Silver, Gold)
+- Apache Spark (PySpark) data transformations
+- AWS Glue Data Catalog integration
 - Amazon Athena analytics
-- Power BI dashboards
+- Power BI reporting
+- Docker-based deployment
 - IAM-based security
 
 ---
@@ -218,36 +210,130 @@ Power BI
 # 📚 Skills Demonstrated
 
 - Python
+- SQL
 - Apache Airflow
-- GitHub REST API
-- AWS S3
 - Apache Spark (PySpark)
+- GitHub REST API
+- Amazon S3
 - AWS Glue
 - Amazon Athena
 - Power BI
+- Docker
+- Docker Compose
 - Data Lake Architecture
 - ETL Pipeline Development
+
+---
+# ⚙️ Prerequisites
+
+Before running the project, ensure you have:
+
+- Python 3.10 or later
+- Docker
+- Docker Compose
+- AWS Account
+- AWS CLI configured
+- GitHub Personal Access Token
+
+---
+
+# 🚀 Installation
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/Monikashwari/Airflow_AWS_DataPipeline.git
+```
+
+## 2. Navigate to the project directory
+
+```bash
+cd Airflow_AWS_DataPipeline
+```
+
+## 3. Create a virtual environment (Optional)
+
+### Windows
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+## 4. Install the required Python packages
+
+```bash
+pip install -r requirements.txt
+```
+
+## 5. Configure Environment Variables
+
+Create a `.env` file using the `.env_example` template and update it with your:
+
+- AWS Credentials
+- GitHub Personal Access Token
+- S3 Bucket Name
+- Other required configuration values
+
+## 6. Start Apache Airflow
+
+```bash
+docker-compose up
+```
+
+## 7. Access the Airflow Web UI
+
+Open your browser and navigate to:
+
+```text
+http://localhost:8080
+```
+
+Default credentials:
+
+```text
+Username: airflow
+Password: airflow
+```
+
+## 8. Trigger the DAG
+
+Enable the DAG from the Airflow UI and trigger it to execute the complete data pipeline.
+
+---
+
+# 📈 Future Enhancements
+
+- Incremental data loading
+- Data quality validation
+- Automated monitoring and alerting
+- CI/CD pipeline integration
+- Infrastructure as Code using Terraform
+- Data lineage tracking
 
 ---
 
 # 👩‍💻 Author
 
-**Monikashwari**
+## Monikashwari
 
 Aspiring Data Engineer
 
-### Skills
+### Technical Skills
 
 - Python
 - SQL
-- PySpark
 - Apache Airflow
-- AWS
-- Athena
+- PySpark
+- AWS S3
 - AWS Glue
-- Amazon S3
+- Amazon Athena
 - Power BI
-
----
-
-⭐ If you found this project useful, consider giving it a Star!
+- Docker
