@@ -22,7 +22,7 @@ The pipeline automates:
 
 ## 🏗️ Architecture
 
-![AWS Data Engineering Pipeline Architecture](Acreenshot 2026-07-08 231726.png)
+![AWS Data Engineering Pipeline Architecture](Screenshot 2026-07-08 231726.png)
 ---
 
 # 🛠️ Tech Stack
